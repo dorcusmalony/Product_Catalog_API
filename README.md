@@ -131,8 +131,7 @@ GET /phones
 ]
 ```
 
-PUT /inventory/60af4adbe72b4a3d12345678
-Content-Type: application/json
+
 
 ## Error Handling
 - `400 Bad Request` for invalid inputs
