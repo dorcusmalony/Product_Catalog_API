@@ -1,7 +1,7 @@
 # Product Catalog API
 
 ## Overview
-The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, and tracking pricing and discounts.
+The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, tracking pricing and discounts, and generating basic reports.
 
 ## Features
 - CRUD operations for phones and categories
@@ -9,6 +9,7 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 - Phone variants (sizes, colors, etc.)
 - Inventory tracking
 - Pricing and discount support
+- Basic reporting (e.g., low stock items, best-selling phones)
 - Error handling and input validation
 
 ## Technologies Used
@@ -78,6 +79,13 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 | GET    | `/inventory/low-stock` | Retrieve phones with low stock       |
 | PUT    | `/inventory/:id`      | Update inventory quantity              |
 
+### Reporting
+| Method | Endpoint                 | Description                              |
+|--------|-------------------------|------------------------------------------|
+| GET    | `/reports/low-stock`     | Retrieve phones with low stock          |
+| GET    | `/reports/best-selling`  | Retrieve best-selling phones            |
+| GET    | `/reports/recently-added` | Retrieve recently added phones         |
+
 ## Example Requests & Responses
 
 ### Create a Phone
@@ -135,18 +143,7 @@ GET /phones
 - `400 Bad Request` for invalid inputs
 - `404 Not Found` if a resource does not exist
 - `500 Internal Server Error` for server issues
-  ## 400 validation error
-  {
-  "status": "error",
-  "code": 400,
-  "message": "Validation failed: 'price' must be a positive number"
 
-}
-{
-  "status": "error",
-  "code": 404,
-  "message": "Phone with id '60af4adbe72b4a3d12345678' not found"
-}
 ## Testing
 You can test the API using:
 - [Postman](https://www.postman.com/)
@@ -163,5 +160,10 @@ You can test the API using:
 - Add caching for faster responses
 - Extend filtering with more parameters
 - Implement pagination for large phone lists
-  - Implement pagination for `/phones` with `?page=1&limit=20`
-- Add total count in response headers
+
+
+
+   
+
+
+  
