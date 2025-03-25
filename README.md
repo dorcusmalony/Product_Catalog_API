@@ -1,207 +1,154 @@
-# Product_Catalog_API
+# Product Catalog API
 
+## Overview
+The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, and tracking pricing and discounts.
 
-This is a RESTful API for a *Product Catalog System. It allows users to **create, read, update, and delete* products, organize them into *categories, and perform **search and filtering* operations.
+## Features
+- CRUD operations for phones and categories
+- Phone search and filtering
+- Phone variants (sizes, colors, etc.)
+- Inventory tracking
+- Pricing and discount support
+- Error handling and input validation
 
+## Technologies Used
+- Node.js
+- Express.js
+- MongoDB (Mongoose ORM)
+- dotenv (for environment variables)
+- Joi (for input validation)
+- Postman (for testing)
 
+## Installation
 
-## 📌 Features
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/product-catalog-api.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd product-catalog-api
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Set up environment variables:
+   - Create a `.env` file in the root directory
+   - Add the following variables:
+     ```env
+     PORT=5000
+     MONGO_URI=mongodb+srv://your-mongodb-url
+     ```
+5. Start the server:
+   ```sh
+   npm start
+   ```
 
-- 📦 *CRUD operations* for products
-- 🗂 *Categorization* of products
-- 🔍 *Search & Filtering* (by name, description, category)
-- 🏷 *Product Variants* (e.g., different sizes, colors)
-- 📊 *Inventory Tracking*
-- 💰 *Pricing & Discounts*
-- 🔒 *Error Handling & Input Validation*
-- 📜 *Well-structured API documentation*
+## API Endpoints
 
----
+### Phone Management
+| Method | Endpoint          | Description                      |
+|--------|------------------|----------------------------------|
+| POST   | `/phones`      | Create a new phone            |
+| GET    | `/phones`      | Retrieve all phones           |
+| GET    | `/phones/:id`  | Retrieve a specific phone     |
+| PUT    | `/phones/:id`  | Update a phone                |
+| DELETE | `/phones/:id`  | Delete a phone                |
 
-## 🚀 Setup & Installation
+### Category Management
+| Method | Endpoint         | Description                      |
+|--------|-----------------|----------------------------------|
+| POST   | `/categories`   | Create a new category           |
+| GET    | `/categories`   | Retrieve all categories         |
+| GET    | `/categories/:id` | Retrieve a specific category   |
+| PUT    | `/categories/:id` | Update a category              |
+| DELETE | `/categories/:id` | Delete a category              |
 
-### 1️⃣ Prerequisites
-Ensure you have the following installed:
+### Phone Search & Filtering
+| Method | Endpoint          | Description                              |
+|--------|------------------|------------------------------------------|
+| GET    | `/phones/search?query=value` | Search phones by name/description |
+| GET    | `/phones?category=value`     | Filter phones by category         |
+| GET    | `/phones?minPrice=10&maxPrice=100` | Filter by price range |
 
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- [MongoDB](https://www.mongodb.com/) (local or cloud)
-- [Postman](https://www.postman.com/) (optional, for API testing)
+### Inventory Management
+| Method | Endpoint              | Description                              |
+|--------|----------------------|------------------------------------------|
+| GET    | `/inventory/low-stock` | Retrieve phones with low stock       |
+| PUT    | `/inventory/:id`      | Update inventory quantity              |
 
-### 2️⃣ Clone the Repository
+## Example Requests & Responses
+
+### Create a Phone
+**Request:**
 ```sh
-git clone https://github.com/your-username/product-catalog-api.git
-cd product-catalog-api
-### 3️⃣ Install Dependencies
-npm install
-4️⃣ Configure Environment Variables
-Create a .env file in the root directory and add:
+POST /phones
+Content-Type: application/json
+{
+  "name": "iPhone 14",
+  "description": "Latest Apple iPhone",
+  "price": 1200,
+  "category": "Smartphones",
+  "variants": [{"color": "Black", "size": "128GB"}],
+  "stock": 10
+}
+```
 
-env
+**Response:**
+```sh
+201 Created
+{
+  "id": "60af4adbe72b4a3d12345678",
+  "name": "iPhone 14",
+  "description": "Latest Apple iPhone",
+  "price": 1200,
+  "category": "Smartphones",
+  "variants": [{"color": "Black", "size": "128GB"}],
+  "stock": 10
+}
+```
 
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-5️⃣ Start the Server
-sh
+### Retrieve All Phones
+**Request:**
+```sh
+GET /phones
+```
 
-npm start
-The API will run on:
-📍 http://localhost:3000/
-
-📌 API Documentation
-📦 Product Endpoints
-🔹 Get All Products
-http
-
-GET /api/products
-📥 Request Example:
-
-sh
-
-curl -X GET http://localhost:3000/api/products
-📤 Response Example:
-
-json
-
+**Response:**
+```sh
+200 OK
 [
   {
-    "_id": "652cfdab9a6c123456789012",
-    "name": "Gaming Laptop",
-    "description": "High-performance laptop for gaming",
-    "price": 1500,
-    "category": "Electronics",
-    "inventory": 10
+    "id": "60af4adbe72b4a3d12345678",
+    "name": "iPhone 14",
+    "description": "Latest Apple iPhone",
+    "price": 1200,
+    "category": "Smartphones",
+    "variants": [{"color": "Black", "size": "128GB"}],
+    "stock": 10
   }
 ]
-🔹 Get a Single Product
-http
+```
 
-GET /api/products/:id
-📥 Request Example:
+## Error Handling
+- `400 Bad Request` for invalid inputs
+- `404 Not Found` if a resource does not exist
+- `500 Internal Server Error` for server issues
 
-sh
+## Testing
+You can test the API using:
+- [Postman](https://www.postman.com/)
+- cURL commands in the terminal
+- VS Code REST Client extension
 
-curl -X GET http://localhost:3000/api/products/652cfdab9a6c123456789012
-📤 Response Example:
+## Assumptions & Limitations
+- This API assumes a MongoDB database connection.
+- No authentication or user roles are implemented (can be extended later).
+- Pricing does not support complex discount structures (only basic discounts).
 
-json
-
-{
-  "_id": "652cfdab9a6c123456789012",
-  "name": "Gaming Laptop",
-  "description": "High-performance laptop for gaming",
-  "price": 1500,
-  "category": "Electronics",
-  "inventory": 10
-}
-🔹 Create a Product
-http
-
-POST /api/products
-📥 Request Body (JSON):
-
-json
-
-{
-  "name": "Ultrabook Laptop",
-  "description": "Lightweight and powerful laptop",
-  "price": 1200,
-  "category": "Electronics",
-  "inventory": 5
-}
-📤 Response Example:
-
-json
-
-{
-  "_id": "652d01eb9a6c123456789013",
-  "name": "Ultrabook Laptop",
-  "description": "Lightweight and powerful laptop",
-  "price": 1200,
-  "category": "Electronics",
-  "inventory": 5
-}
-🔹 Update a Product
-http
-
-PUT /api/products/:id
-📥 Request Body (JSON):
-
-json
-
-{
-  "price": 1100,
-  "inventory": 8
-}
-📤 Response Example:
-
-json
-
-{
-  "_id": "652d01eb9a6c123456789013",
-  "name": "Ultrabook Laptop",
-  "description": "Lightweight and powerful laptop",
-  "price": 1100,
-  "category": "Electronics",
-  "inventory": 8
-}
-🔹 Delete a Product
-http
-
-DELETE /api/products/:id
-📤 Response Example:
-
-json
-
-{
-  "message": "Product deleted successfully"
-}
-🗂 Category Endpoints
-🔹 Get All Categories
-http
-
-GET /api/categories
-🔹 Add a New Category
-http
-
-POST /api/categories
-📥 Request Body:
-
-json
-
-{
-  "name": "Gaming Laptops"
-}
-🔹 Delete a Category
-http
-
-DELETE /api/categories/:id
-🚨 Assumptions & Limitations
-Database: Uses MongoDB (ensure MongoDB is running).
-
-Product Model:
-
-name: Required, string
-
-description: Required, string
-
-price: Required, number
-
-category: Required, string
-
-inventory: Required, number
-
-Error Handling:
-
-Returns 400 for invalid input.
-
-Returns 404 if product not found.
-
-Authentication: working on it but not yet implemented (can be added with JWT).
-
-
-
-🚀 Future Enhancements
-✅ User authentication & role-based access
-✅ Pagination & sorting for large datasets
-✅ Advanced search & filtering
-✅ Payment gateway integration
+## Future Improvements
+- Implement user authentication with JWT
+- Add caching for faster responses
+- Extend filtering with more parameters
+- Implement pagination for large phone lists
