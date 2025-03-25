@@ -88,35 +88,6 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 
 ## Example Requests & Responses
 
-### Create a Phone
-**Request:**
-```sh
-POST /phones
-Content-Type: application/json
-{
-  "name": "iPhone 14",
-  "description": "Latest Apple iPhone",
-  "price": 1200,
-  "category": "Smartphones",
-  "variants": [{"color": "Black", "size": "128GB"}],
-  "stock": 10
-}
-```
-
-**Response:**
-```sh
-201 Created
-{
-  "id": "60af4adbe72b4a3d12345678",
-  "name": "iPhone 14",
-  "description": "Latest Apple iPhone",
-  "price": 1200,
-  "category": "Smartphones",
-  "variants": [{"color": "Black", "size": "128GB"}],
-  "stock": 10
-}
-```
-
 ### Retrieve All Phones
 **Request:**
 ```sh
@@ -128,21 +99,39 @@ GET /phones
 200 OK
 [
   {
-    "id": "60af4adbe72b4a3d12345678",
-    "name": "iPhone 14",
-    "description": "Latest Apple iPhone",
+    "id": "60bf4adbe72b4a3d87654321",
+    "name": "iPhone 13",
     "price": 1200,
-    "category": "Smartphones",
-    "variants": [{"color": "Black", "size": "128GB"}],
-    "stock": 10
+    "category": "Smartphones"
   }
 ]
 ```
 
 ## Error Handling
-- `400 Bad Request` for invalid inputs
-- `404 Not Found` if a resource does not exist
+- `400 Bad Request` for invalid inputs (e.g., missing required fields, incorrect data format)
+- `404 Not Found` if a resource does not exist (e.g., phone or category ID not found)
+- `409 Conflict` for duplicate entries (e.g., adding a phone that already exists)
+- `422 Unprocessable Entity` for validation errors (e.g., Joi schema validation failure)
 - `500 Internal Server Error` for server issues
+
+### Example Error Response
+**Request:**
+```sh
+POST /phones
+Content-Type: application/json
+{
+  "name": "",
+  "price": "not a number"
+}
+```
+
+**Response:**
+```sh
+400 Bad Request
+{
+  "error": "Validation failed: name is required, price must be a number"
+}
+```
 
 ## Testing
 You can test the API using:
@@ -163,7 +152,9 @@ You can test the API using:
 
 
 
-   
 
 
-  
+
+
+
+
