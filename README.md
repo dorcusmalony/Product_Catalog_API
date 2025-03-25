@@ -1,7 +1,7 @@
 # Product Catalog API
 
 ## Overview
-The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, tracking pricing and discounts, and generating basic reports.
+The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, and tracking pricing and discounts.
 
 ## Features
 - CRUD operations for phones and categories
@@ -9,7 +9,6 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 - Phone variants (sizes, colors, etc.)
 - Inventory tracking
 - Pricing and discount support
-- Basic reporting (e.g., low stock items, best-selling phones)
 - Error handling and input validation
 
 ## Technologies Used
@@ -79,14 +78,36 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 | GET    | `/inventory/low-stock` | Retrieve phones with low stock       |
 | PUT    | `/inventory/:id`      | Update inventory quantity              |
 
-### Reporting
-| Method | Endpoint                 | Description                              |
-|--------|-------------------------|------------------------------------------|
-| GET    | `/reports/low-stock`     | Retrieve phones with low stock          |
-| GET    | `/reports/best-selling`  | Retrieve best-selling phones            |
-| GET    | `/reports/recently-added` | Retrieve recently added phones         |
-
 ## Example Requests & Responses
+
+### Create a Phone
+**Request:**
+```sh
+POST /phones
+Content-Type: application/json
+{
+  "name": "iPhone 14",
+  "description": "Latest Apple iPhone",
+  "price": 1200,
+  "category": "Smartphones",
+  "variants": [{"color": "Black", "size": "128GB"}],
+  "stock": 10
+}
+```
+
+**Response:**
+```sh
+201 Created
+{
+  "id": "60af4adbe72b4a3d12345678",
+  "name": "iPhone 14",
+  "description": "Latest Apple iPhone",
+  "price": 1200,
+  "category": "Smartphones",
+  "variants": [{"color": "Black", "size": "128GB"}],
+  "stock": 10
+}
+```
 
 ### Retrieve All Phones
 **Request:**
@@ -99,39 +120,21 @@ GET /phones
 200 OK
 [
   {
-    "id": "60bf4adbe72b4a3d87654321",
-    "name": "iPhone 13",
+    "id": "60af4adbe72b4a3d12345678",
+    "name": "iPhone 14",
+    "description": "Latest Apple iPhone",
     "price": 1200,
-    "category": "Smartphones"
+    "category": "Smartphones",
+    "variants": [{"color": "Black", "size": "128GB"}],
+    "stock": 10
   }
 ]
 ```
 
 ## Error Handling
-- `400 Bad Request` for invalid inputs (e.g., missing required fields, incorrect data format)
-- `404 Not Found` if a resource does not exist (e.g., phone or category ID not found)
-- `409 Conflict` for duplicate entries (e.g., adding a phone that already exists)
-- `422 Unprocessable Entity` for validation errors (e.g., Joi schema validation failure)
+- `400 Bad Request` for invalid inputs
+- `404 Not Found` if a resource does not exist
 - `500 Internal Server Error` for server issues
-
-### Example Error Response
-**Request:**
-```sh
-POST /phones
-Content-Type: application/json
-{
-  "name": "",
-  "price": "not a number"
-}
-```
-
-**Response:**
-```sh
-400 Bad Request
-{
-  "error": "Validation failed: name is required, price must be a number"
-}
-```
 
 ## Testing
 You can test the API using:
@@ -151,10 +154,4 @@ You can test the API using:
 - Implement pagination for large phone lists
 
 
-
-
-
-
-
-
-
+   
