@@ -2,6 +2,13 @@
 
 ## Overview
 The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, and tracking pricing and discounts.
+## Project Structure
+/controllers # Route handlers
+/models # Database models
+/routes # API endpoints
+/middlewares # Custom middleware
+/config # DB & env setup
+/validations # Joi schemas
 
 ## Features
 - CRUD operations for phones and categories
@@ -155,5 +162,6 @@ You can test the API using:
 - Extend filtering with more parameters
 - Implement pagination for large phone lists
 
-
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request.
    
