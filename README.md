@@ -135,7 +135,18 @@ GET /phones
 - `400 Bad Request` for invalid inputs
 - `404 Not Found` if a resource does not exist
 - `500 Internal Server Error` for server issues
+  ## 400 validation error
+  {
+  "status": "error",
+  "code": 400,
+  "message": "Validation failed: 'price' must be a positive number"
 
+}
+{
+  "status": "error",
+  "code": 404,
+  "message": "Phone with id '60af4adbe72b4a3d12345678' not found"
+}
 ## Testing
 You can test the API using:
 - [Postman](https://www.postman.com/)
@@ -152,3 +163,5 @@ You can test the API using:
 - Add caching for faster responses
 - Extend filtering with more parameters
 - Implement pagination for large phone lists
+  - Implement pagination for `/phones` with `?page=1&limit=20`
+- Add total count in response headers
