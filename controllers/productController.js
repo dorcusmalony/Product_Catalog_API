@@ -1,6 +1,6 @@
-const Product = require('.//models/Product');
-const ErrorResponse = require('..//utils/errorResponse');
-const APIFeatures = require('..//utils/apiFeatures');
+const product = require('../models/product');
+const errorResponse = require('../utils/errorResponse');
+const apiFeatures = require('../utils/apiFeatures');
 
 // @desc    Get all products
 // @route   GET /api/v1/products

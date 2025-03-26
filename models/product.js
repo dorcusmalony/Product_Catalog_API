@@ -59,7 +59,7 @@ const ProductSchema = new mongoose.Schema({
   },
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Category',
+    ref: 'category',
     required: true
   },
   countInStock: {
@@ -106,8 +106,8 @@ ProductSchema.virtual('discountedPrice').get(function() {
 });
 
 // Reverse populate with virtuals
-ProductSchema.virtual('inventory', {
-  ref: 'Inventory',
+productSchema.virtual('inventory', {
+  ref: 'inventory',
   localField: '_id',
   foreignField: 'product',
   justOne: true

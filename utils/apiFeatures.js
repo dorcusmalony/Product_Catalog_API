@@ -1,16 +1,18 @@
-class APIFeatures {
+class apiFeatures {
     constructor(query, queryStr) {
       this.query = query;
       this.queryStr = queryStr;
     }
   
     search() {
-      const keyword = this.queryStr.keyword ? {
-        name: {
-          $regex: this.queryStr.keyword,
-          $options: 'i'
-        }
-      } : {};
+      const keyword = this.queryStr.keyword
+        ? {
+            $or: [
+              { name: { $regex: this.queryStr.keyword, $options: 'i' } },
+              { description: { $regex: this.queryStr.keyword, $options: 'i' } }
+            ]
+          }
+        : {};
   
       this.query = this.query.find({ ...keyword });
       return this;
@@ -19,13 +21,13 @@ class APIFeatures {
     filter() {
       const queryCopy = { ...this.queryStr };
   
-      // Remove fields that are not for filtering
+      // Remove fields not related to filtering
       const removeFields = ['keyword', 'limit', 'page', 'sort'];
       removeFields.forEach(el => delete queryCopy[el]);
   
-      // Advanced filtering with operators
+      // Convert MongoDB operators to proper format
       let queryStr = JSON.stringify(queryCopy);
-      queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
+      queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
   
       this.query = this.query.find(JSON.parse(queryStr));
       return this;
@@ -42,8 +44,8 @@ class APIFeatures {
     }
   
     paginate() {
-      const page = this.queryStr.page * 1 || 1;
-      const limit = this.queryStr.limit * 1 || 10;
+      const page = Math.max(1, Number(this.queryStr.page) || 1);
+      const limit = Math.max(1, Number(this.queryStr.limit) || 10);
       const skip = (page - 1) * limit;
   
       this.query = this.query.skip(skip).limit(limit);
@@ -51,4 +53,5 @@ class APIFeatures {
     }
   }
   
-  module.exports = APIFeatures;
+  module.exports = apiFeatures;
+  

@@ -1,4 +1,4 @@
-const ErrorResponse = require('../utils/errorResponse');
+const errorResponse = require('../utils/errorResponse');
 require('colors');
 
 // Note the consistent naming - using plural "errorHandlers"

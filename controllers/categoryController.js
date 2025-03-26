@@ -1,6 +1,6 @@
-const Category = require('.//models/Category');
-const ErrorResponse = require('..//utils/errorResponse');
-const APIFeatures = require('..//utils/apiFeatures');
+const category = require('../models/category');
+const ErrorResponse = require('../utils/errorResponse');
+const APIFeatures = require('../utils/apiFeatures');
 
 // @desc    Get all categories
 // @route   GET /api/v1/categories

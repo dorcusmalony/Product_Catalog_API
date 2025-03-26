@@ -7,9 +7,9 @@ const {
   deleteProduct,
   getFeaturedProducts,
   getProductsByCategory
-} = require('./controllers/productController');
-const { validateProduct } = require('./utilsutils/validators');
-const { validateObjectId } = require('./utilsutils/validateObjectId');
+} = require('../controllers/productController');
+const { validateProduct } = require('../utilsutils/validators');
+const { validateObjectId } = require('../utilsutils/validateObjectId');
 
 const router = express.Router();
 

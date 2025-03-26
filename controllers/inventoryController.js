@@ -1,6 +1,6 @@
-const Inventory = require('.//models/Inventory');
-const Product = require('.//models/Product');
-const ErrorResponse = require('..//utils/errorResponse');
+const inventory = require('../models/inventory');
+const product = require('../models/product');
+const errorResponse = require('../utils/errorResponse');
 
 // @desc    Get all inventory items
 // @route   GET /api/v1/inventory

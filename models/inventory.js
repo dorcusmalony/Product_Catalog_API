@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const InventorySchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Product',
+    ref: 'product',
     required: true,
     unique: true
   },
@@ -40,4 +40,4 @@ InventorySchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Inventory', InventorySchema);
+module.exports = mongoose.model('inventory', inventorySchema);
