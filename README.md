@@ -30,7 +30,7 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/product-catalog-api.git
+   git clone https://github.com/dorcusmalony/Product_Catalog_API.git
    ```
 2. Navigate to the project directory:
    ```sh
