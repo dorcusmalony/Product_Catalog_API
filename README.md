@@ -8,7 +8,7 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 - /routes # API endpoints
 - /middlewares # Custom middleware
 - /config # DB & env setup
-- /validations # Joi schemas
+- /utils # Joi schemas
 
 ## Features
 - CRUD operations for phones and categories
