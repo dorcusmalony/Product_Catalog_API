@@ -5,6 +5,7 @@ The Product Catalog API is a RESTful service built using Node.js and Express.js 
 ## Project Structure
 
 
+```text
 product-catalog-api/
 ├── .env
 ├── .gitignore
