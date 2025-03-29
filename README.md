@@ -3,12 +3,32 @@
 ## Overview
 The Product Catalog API is a RESTful service built using Node.js and Express.js to manage phones for an e-commerce platform. It provides functionality for creating, reading, updating, and deleting phones, organizing them into categories, searching and filtering, handling inventory, and tracking pricing and discounts.
 ## Project Structure
-- /controllers # Route handlers
-- /models # Database models
-- /routes # API endpoints
-- /middlewares # Custom middleware
-- /config # DB & env setup
-- /utils # Joi schemas
+product-catalog-api/
+├── .env
+├── .gitignore
+├── README.md
+├── package.json
+├── package-lock.json
+├── server.js
+├── config/
+│   └── db.js
+├── controllers/
+│   ├── categoryController.js
+│   ├── productController.js
+│   ├── userController.js
+├── models/
+│   ├── category.js
+│   ├── product.js
+│   ├── user.js
+├── routes/
+│   ├── categoryRoutes.js
+│   ├── productRoutes.js
+│   ├── userRoutes.js
+├── middlewares/
+│   ├── authMiddleware.js
+│   └── errorMiddleware.js
+└── utils/
+    └── validation.js
 
 ## Features
 - CRUD operations for phones and categories
