@@ -1,146 +1,96 @@
-const product = require('../models/product');
-const errorResponse = require('../utils/errorResponse');
-const apiFeatures = require('../utils/apiFeatures');
+const Product = require('../models/product');
 
-// @desc    Get all products
-// @route   GET /api/v1/products
-// @access  Public
-exports.getProducts = async (req, res, next) => {
+
+
+// Get low stock items
+const getLowStockItems = async (req, res) => {
   try {
-    const features = new APIFeatures(Product.find(), req.query)
-      .search()
-      .filter()
-      .sort()
-      .paginate();
-
-    const products = await features.query.populate('category').lean();
-
-    res.status(200).json({
-      success: true,
-      count: products.length,
-      data: products
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// @desc    Get single product
-// @route   GET /api/v1/products/:id
-// @access  Public
-exports.getProduct = async (req, res, next) => {
-  try {
-    const product = await Product.findById(req.params.id).populate('category').lean();
-
-    if (!product) {
-      return next(new ErrorResponse(`Product not found`, 404));
-    }
-
-    res.status(200).json({
-      success: true,
-      data: product
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// @desc    Create new product
-// @route   POST /api/v1/products
-// @access  Private
-exports.createProduct = async (req, res, next) => {
-  try {
-    // Check if product with the same name exists
-    const existingProduct = await Product.findOne({ name: req.body.name });
-    if (existingProduct) {
-      return next(new ErrorResponse('Product already exists', 400));
-    }
-
-    const product = await Product.create(req.body);
-
-    res.status(201).json({
-      success: true,
-      data: product
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// @desc    Update product
-// @route   PUT /api/v1/products/:id
-// @access  Private
-exports.updateProduct = async (req, res, next) => {
-  try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
+    const lowStockThreshold = 5; // Define your low stock threshold
+    const lowStockProducts = await Product.find({
+      $or: [
+        { inventory: { $lt: lowStockThreshold } },
+        { 'variants.stock': { $lt: lowStockThreshold } },
+      ],
     }).populate('category');
-
-    if (!product) {
-      return next(new ErrorResponse(`Product not found`, 404));
-    }
-
-    res.status(200).json({
-      success: true,
-      data: product
-    });
-  } catch (err) {
-    next(err);
+    res.status(200).json(lowStockProducts);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Delete product
-// @route   DELETE /api/v1/products/:id
-// @access  Private
-exports.deleteProduct = async (req, res, next) => {
+
+// Get all products or search for products
+const getAllProducts = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let products;
+    if (search) {
+      const regex = new RegExp(search, 'i'); // Case-insensitive search
+      products = await Product.find({
+        $or: [
+          { name: regex },
+          { description: regex },
+        ],
+      }).populate('category');
+    } else {
+      products = await Product.find().populate('category');
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+
+// Get a single product by ID
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate('category');
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Create a new product
+const createProduct = async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Update a product
+const updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Delete a product
+const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-
     if (!product) {
-      return next(new ErrorResponse(`Product not found`, 404));
+      return res.status(404).json({ message: 'Product not found' });
     }
-
-    res.status(200).json({
-      success: true,
-      data: {}
-    });
-  } catch (err) {
-    next(err);
+    res.json({ message: 'Product deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Get featured products
-// @route   GET /api/v1/products/featured
-// @access  Public
-exports.getFeaturedProducts = async (req, res, next) => {
-  try {
-    const limit = Number(req.query.limit) || 5;
-    const products = await Product.find({ isFeatured: true }).limit(limit).lean();
-
-    res.status(200).json({
-      success: true,
-      count: products.length,
-      data: products
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-// @desc    Get products by category
-// @route   GET /api/v1/products/category/:categoryId
-// @access  Public
-exports.getProductsByCategory = async (req, res, next) => {
-  try {
-    const products = await Product.find({ category: req.params.categoryId }).lean();
-
-    res.status(200).json({
-      success: true,
-      count: products.length,
-      data: products
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, getLowStockItems };

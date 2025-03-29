@@ -1,134 +1,63 @@
-const category = require('../models/category');
-const ErrorResponse = require('../utils/errorResponse');
-const APIFeatures = require('../utils/apiFeatures');
+const Category = require('../models/category');
 
-// @desc    Get all categories
-// @route   GET /api/v1/categories
-// @access  Public
-exports.getCategories = async (req, res, next) => {
+// Get all categories
+const getAllCategories = async (req, res) => {
   try {
-    const features = new APIFeatures(Category.find(), req.query)
-      .filter()
-      .sort()
-      .paginate();
-    
-    const categories = await features.query;
-
-    res.status(200).json({
-      success: true,
-      count: categories.length,
-      data: categories
-    });
-  } catch (err) {
-    next(err);
+    const categories = await Category.find();
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Get single category
-// @route   GET /api/v1/categories/:id
-// @access  Public
-exports.getCategory = async (req, res, next) => {
+// Get a single category by ID
+const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
-
     if (!category) {
-      return next(
-        new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
-      );
+      return res.status(404).json({ message: 'Category not found' });
     }
-
-    res.status(200).json({
-      success: true,
-      data: category
-    });
-  } catch (err) {
-    next(err);
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Create new category
-// @route   POST /api/v1/categories
-// @access  Private
-exports.createCategory = async (req, res, next) => {
+// Create a new category
+const createCategory = async (req, res) => {
   try {
-    const category = await Category.create(req.body);
-
-    res.status(201).json({
-      success: true,
-      data: category
-    });
-  } catch (err) {
-    next(err);
+    const category = new Category(req.body);
+    await category.save();
+    res.status(201).json(category);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Update category
-// @route   PUT /api/v1/categories/:id
-// @access  Private
-exports.updateCategory = async (req, res, next) => {
+// Update a category
+const updateCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
-
+    const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!category) {
-      return next(
-        new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
-      );
+      return res.status(404).json({ message: 'Category not found' });
     }
-
-    res.status(200).json({
-      success: true,
-      data: category
-    });
-  } catch (err) {
-    next(err);
+    res.status(200).json(category);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Delete category
-// @route   DELETE /api/v1/categories/:id
-// @access  Private
-exports.deleteCategory = async (req, res, next) => {
+// Delete a category
+const deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id);
-
+    const category = await Category.findByIdAndDelete(req.params.id);
     if (!category) {
-      return next(
-        new ErrorResponse(`Category not found with id of ${req.params.id}`, 404)
-      );
+      return res.status(404).json({ message: 'Category not found' });
     }
-
-    category.remove();
-
-    res.status(200).json({
-      success: true,
-      data: {}
-    });
-  } catch (err) {
-    next(err);
+    res.status(200).json({ message: 'Category deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// @desc    Get category tree
-// @route   GET /api/v1/categories/tree
-// @access  Public
-exports.getCategoryTree = async (req, res, next) => {
-  try {
-    const categories = await Category.find({ parentCategory: null }).populate({
-      path: 'children',
-      populate: {
-        path: 'children'
-      }
-    });
-
-    res.status(200).json({
-      success: true,
-      count: categories.length,
-      data: categories
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+module.exports = { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory };
