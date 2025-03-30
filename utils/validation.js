@@ -1,18 +1,30 @@
-const { body, validationResult } = require('express-validator');
+const Joi = require('joi');
 
-const validateProduct = [
-  body('name').notEmpty().withMessage('Name is required'),
-  body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
-  body('category').notEmpty().withMessage('Category is required'),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+const productValidationSchema = Joi.object({
+  name: Joi.string().required(),
+  price: Joi.number().required(),
+  description: Joi.string().required(),
+  category: Joi.string().required(),
+  variants: Joi.array().items(
+    Joi.object({
+      size: Joi.string().required(),
+      color: Joi.string().required(),
+      stock: Joi.number().required().default(0),
+    })
+  ),
+  discount: Joi.number().default(0),
+});
+
+const validateProduct = (req, res, next) => {
+  const { error } = productValidationSchema.validate(req.body);
+  if (error) {
+    res.status(400);
+    throw new Error(error.details[0].message);
+  } else {
     next();
   }
-];
+};
 
 module.exports = {
-  validateProduct
+  validateProduct,
 };

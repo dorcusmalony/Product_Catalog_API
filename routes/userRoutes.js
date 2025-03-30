@@ -6,9 +6,12 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  registerUser,
+  authUser,
 } = require('../controllers/userController');
 
-router.route('/').get(getUsers).post(createUser);
+router.route('/').get(getUsers).post(registerUser); // Update to use registerUser
+router.route('/login').post(authUser); // Add route for user login
 router
   .route('/:id')
   .get(getUserById)

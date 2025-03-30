@@ -6,7 +6,8 @@ const connectDB = require('./config/database'); // Updated path
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const userRoutes = require('./routes/userRoutes');
-const { errorHandler } = require('./middlewares/errorMiddleware');
+const inventoryRoutes = require('./routes/inventoryRoutes');
+const { notFound,errorHandler } = require('./middlewares/errorMiddleware');
 
 dotenv.config(); // Load environment variables
 
@@ -21,9 +22,10 @@ app.use(bodyParser.json());
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
+app.use(notFound);
 app.use(errorHandler);
-
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

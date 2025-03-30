@@ -76,12 +76,42 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    await product.remove();
+    await Product.deleteOne({ _id: req.params.id });
     res.json({ message: 'Product removed' });
   } else {
     res.status(404);
     throw new Error('Product not found');
   }
+});
+// @desc    Search products
+// @route   GET /api/products/search
+// @access  Public
+const searchProducts = asyncHandler(async (req, res) => {
+  const { query, category, minPrice, maxPrice } = req.query;
+
+  let filters = {};
+
+  if (query) {
+    filters.$or = [
+      { name: { $regex: query, $options: 'i' } },
+      { description: { $regex: query, $options: 'i' } },
+    ];
+  }
+
+  if (category) {
+    filters.category = category;
+  }
+
+  if (minPrice) {
+    filters.price = { ...filters.price, $gte: minPrice };
+  }
+
+  if (maxPrice) {
+    filters.price = { ...filters.price, $lte: maxPrice };
+  }
+
+  const products = await Product.find(filters);
+  res.json(products);
 });
 
 module.exports = {
@@ -90,4 +120,5 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };
