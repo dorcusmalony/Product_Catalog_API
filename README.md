@@ -113,7 +113,7 @@ product-catalog-api/
 
 ## Example Requests & Responses
 
-### Create a Phone
+### Create a product
 **Request:**
 ```sh
 POST /phones
@@ -142,10 +142,10 @@ Content-Type: application/json
 }
 ```
 
-### Retrieve All Phones
+### Retrieve All Product
 **Request:**
 ```sh
-GET /phones
+GET /product
 ```
 
 **Response:**
