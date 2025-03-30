@@ -77,36 +77,35 @@ product-catalog-api/
 
 ## API Endpoints
 
-### Phone Management
+
+### Product Management
 | Method | Endpoint          | Description                      |
 |--------|------------------|----------------------------------|
-| POST   | `/phones`      | Create a new phone            |
-| GET    | `/phones`      | Retrieve all phones           |
-| GET    | `/phones/:id`  | Retrieve a specific phone     |
-| PUT    | `/phones/:id`  | Update a phone                |
-| DELETE | `/phones/:id`  | Delete a phone                |
+| POST   | `/api/products`      | Create a new product            |
+| GET    | `/api/products`      | Retrieve all products           |
+| GET    | `/api/products/:id`  | Retrieve a specific product     |
+| PUT    | `/api/products/:id`  | Update a product                |
+| DELETE | `/api/products/:id`  | Delete a product                |
 
 ### Category Management
 | Method | Endpoint         | Description                      |
 |--------|-----------------|----------------------------------|
-| POST   | `/categories`   | Create a new category           |
-| GET    | `/categories`   | Retrieve all categories         |
-| GET    | `/categories/:id` | Retrieve a specific category   |
-| PUT    | `/categories/:id` | Update a category              |
-| DELETE | `/categories/:id` | Delete a category              |
+| POST   | `/api/categories`   | Create a new category           |
+| GET    | `/api/categories`   | Retrieve all categories         |
+| GET    | `/api/categories/:id` | Retrieve a specific category   |
+| PUT    | `/api/categories/:id` | Update a category              |
+| DELETE | `/api/categories/:id` | Delete a category              |
 
-### Phone Search & Filtering
+### Product Search & Filtering
 | Method | Endpoint          | Description                              |
 |--------|------------------|------------------------------------------|
-| GET    | `/phones/search?query=value` | Search phones by name/description |
-| GET    | `/phones?category=value`     | Filter phones by category         |
-| GET    | `/phones?minPrice=10&maxPrice=100` | Filter by price range |
+| GET    | `/api/products/search` | Search products by name/description/category/price range |
 
 ### Inventory Management
 | Method | Endpoint              | Description                              |
 |--------|----------------------|------------------------------------------|
-| GET    | `/inventory/low-stock` | Retrieve phones with low stock       |
-| PUT    | `/inventory/:id`      | Update inventory quantity              |
+| GET    | `/api/inventory/low-stock` | Retrieve products with low stock       |
+| PUT    | `/api/inventory/:id`      | Update inventory quantity              |
 
 ## Example Requests & Responses
 
@@ -119,7 +118,7 @@ Content-Type: application/json
   "name": "iPhone 14",
   "description": "Latest Apple iPhone",
   "price": 1200,
-  "category": "Smartphones",
+  "category": "electronics",
   "variants": [{"color": "Black", "size": "128GB"}],
   "stock": 10
 }
