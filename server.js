@@ -1,17 +1,17 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose'); // Added to close the connection
-const connectDB = require('./config/database');
+const mongoose = require('mongoose');
+const connectDB = require('./config/database'); // Updated path
 const productRoutes = require('./routes/productRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const userRoutes = require('./routes/userRoutes');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 
-dotenv.config();
+dotenv.config(); // Load environment variables
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Connect to the database
 connectDB();
