@@ -14,11 +14,12 @@ product-catalog-api/
 ├── package-lock.json
 ├── server.js
 ├── config/
-│   └── db.js
+│   └── database.js
 ├── controllers/
 │   ├── categoryController.js
 │   ├── productController.js
 │   ├── userController.js
+    |__inventoryController.js
 ├── models/
 │   ├── category.js
 │   ├── product.js
@@ -27,9 +28,12 @@ product-catalog-api/
 │   ├── categoryRoutes.js
 │   ├── productRoutes.js
 │   ├── userRoutes.js
+    |__inventoryRoutes.js
 ├── middlewares/
 │   ├── authMiddleware.js
 │   └── errorMiddleware.js
+    |__validateMiddleware.js
+
 └── utils/
     └── validation.js
 
