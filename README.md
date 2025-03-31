@@ -116,7 +116,7 @@ product-catalog-api/
 ### Create a product
 **Request:**
 ```sh
-POST /phones
+POST /product
 Content-Type: application/json
 {
   "name": "iPhone 14",
